@@ -21,13 +21,11 @@ jobs:
 
       - name: Debug Dependabot Metadata
         run: |
-          echo "Dependency Names: ${{ steps.metadata.outputs.dependency-names }}"
+          echo "Dependency Names: '${{ steps.metadata.outputs.dependency-names }}'"
           echo "Update Type: '${{ steps.metadata.outputs.update-type }}'"
 
       - name: Enable Auto-Merge for Dependabot PRs
-        if: >
-          steps.metadata.outputs.update-type != '' &&
-          steps.metadata.outputs.update-type == 'version-update:semver-patch'
+        if: steps.metadata.outputs.dependency-names != ''
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
