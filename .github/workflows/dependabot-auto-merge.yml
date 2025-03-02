@@ -10,7 +10,7 @@ permissions:
 jobs:
   dependabot:
     runs-on: ubuntu-latest
-    if: github.actor == 'dependabot[bot]'
+    if: github.actor == 'dependabot[bot]' # Ensures it runs only for Dependabot PRs
 
     steps:
       - name: Dependabot Metadata
@@ -26,7 +26,7 @@ jobs:
 
       - name: Enable Auto-Merge for Dependabot PRs
         if: >
-          contains(fromJSON(steps.metadata.outputs.dependency-names), 'my-dependency') &&
+          contains(steps.metadata.outputs.dependency-names, 'my-dependency') &&
           steps.metadata.outputs.update-type == 'version-update:semver-patch'
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
