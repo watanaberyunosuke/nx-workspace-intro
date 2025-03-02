@@ -13,17 +13,17 @@ jobs:
     if: contains(github.event.pull_request.user.login, 'dependabot')
 
     steps:
-      - name: Debug Repository Name
-        run: echo "Repository: ${{ github.repository }}"
+      # - name: Debug Repository Name
+      #   run: echo "Repository: ${{ github.repository }}"
 
       - name: Debug PR User
         run: echo "PR User: ${{ github.event.pull_request.user.login }}"
 
       - name: Dependabot Metadata
         id: metadata
-        uses: dependabot/fetch-metadata@d7267f607e9d3fb96fc2fbe83e0af444713e90b7
+        uses: dependabot/fetch-metadata@v1
         with:
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Debug Dependabot Metadata
         run: |
@@ -31,7 +31,9 @@ jobs:
           echo "Update Type: ${{ steps.metadata.outputs.update-type }}"
 
       - name: Enable Auto-Merge for Dependabot PRs
-        if: steps.metadata.outputs.update-type == 'version-update:semver-patch'
+        if: > 
+          contains(fromJSON(steps.metadata.outputs.dependency-names), 'my-dependency') 
+          && steps.metadata.outputs.update-type == 'version-update:semver-patch'
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GH_TOKEN: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
