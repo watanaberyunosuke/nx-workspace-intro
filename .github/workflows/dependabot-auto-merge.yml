@@ -13,11 +13,13 @@ jobs:
     if: contains(github.event.pull_request.user.login, 'dependabot')
 
     steps:
-      # - name: Debug Repository Name
-      #   run: echo "Repository: ${{ github.repository }}"
+      - name: Debug Repository Name
+        run: | 
+          echo "Repository: ${{ github.repository }}"
 
       - name: Debug PR User
-        run: echo "PR User: ${{ github.event.pull_request.user.login }}"
+        run: |
+          echo "PR User: ${{ github.event.pull_request.user.login }}"
 
       - name: Dependabot Metadata
         id: metadata
