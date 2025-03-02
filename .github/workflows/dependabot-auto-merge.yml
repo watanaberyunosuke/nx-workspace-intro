@@ -21,6 +21,10 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Debug Dependabot Metadata
+        run: |
+          echo "Dependency Names: ${{ steps.metadata.outputs.dependency-names }}"
+          echo "Update Type: ${{ steps.metadata.outputs.update-type }}"
       - name: Enable Auto-Merge for Dependabot PRs
         if: >
           contains(fromJSON(steps.metadata.outputs.dependency-names), 'my-dependency') &&
